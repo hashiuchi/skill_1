@@ -13,18 +13,18 @@
       <div class="col-xs-8 col-xs-offset-2 thumbnail">
         <h2 class="text-center content_header">タスク追加</h2>
 
-        <form method="POST" action="">
+        <form method="POST" action="schedule.php">
           <div class="form-group">
             <label for="task">タスク</label>
-            <input name="" class="form-control">
+            <input type = "text" name="mustdo" class="form-control">
           </div>
           <div class="form-group">
             <label for="date">日程</label>
-            <input type="date" name="" class="form-control">
+            <input type="date" name="date" class="form-control">
           </div>
           <div class="form-group">
             <label for="detail">詳細</label>
-            <textarea name="" class="form-control" rows="3"></textarea><br>
+            <textarea name="detail" class="form-control" rows="3"></textarea><br>
           </div>
           <input type="submit" class="btn btn-primary" value="投稿">
         </form>

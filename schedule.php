@@ -1,3 +1,42 @@
+<?php
+
+  $dsn = 'mysql:dbname=skill_1;host=localhost';
+$user = 'root';
+$password='';
+$dbh = new PDO($dsn, $user, $password);
+$dbh->query('SET NAMES utf8');
+
+//SQL文を実行する
+if (!empty($_POST)) {
+  $mustdo = htmlspecialchars($_POST['mustdo']);
+  $date = htmlspecialchars($_POST['date']);
+  $detail = htmlspecialchars($_POST['detail']);
+
+  if (!empty($mustdo || $date || $detail)) {
+    $sql='INSERT INTO `tasks`(`title`,`date`,`detail`) VALUES(?,?,?)';
+    $data =[$mustdo,$date,$detail];
+    $stmt=$dbh->prepare($sql);
+    $stmt->execute($data);
+  }
+}
+
+$sql='SELECT * FROM `tasks`';
+$stmt=$dbh->prepare($sql);
+$stmt->execute();
+
+$comments = array();
+
+while (1)
+{
+  $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+  if($rec==false)
+  {
+    break;
+  }
+  $comments[]=$rec;
+}
+$dbh=null;
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,7 +46,7 @@
   <link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
-<body style="margin-top: 60px">
+<body style="margin-top: 40px">
 
   <div class="container">
     <div class="row">
@@ -16,47 +55,28 @@
         <h2 class="text-center content_header">タスク管理</h2>
 
         <div class="col-xs-4">
-          <a href="post.html" class="btn btn-primary button">追加</a>
+          <a href="http://localhost/batch43/skill_1/post.php" class="btn btn-primary button">追加</a>
         </div>
+        <br><br>
+        <br><br>
+        <br><br>
 
+        <?php foreach ($comments as $comment): ?>
+        <article class="timeline-entry">
         <div class="col-xs-8">
-          <div class="task">
-            <h3>8月15日</h3>
+          <div class="task" >
+            <h3><?php echo $comment['title']?></h3>
             <div class="content">
-              <h3 style="font-weight: bold;">明日映画に行く</h3>
-              <h4>ノブさんと映画見に行くことになったが、気まずいら事前に誰かを誘いたい。太一にはもう聞いて見たが断られた。でも二人で行きたくないから必死に誰かを誘いたい</h4>
+              <h3 style="font-weight: bold;"><?php echo $comment['date']?></h3>
+              <h4><?php echo $comment['detail']?></h4>
             </div>
           </div>
-
-          <div class="task">
-            <h3>8月15日</h3>
-            <div class="content">
-              <h3 style="font-weight: bold;">明日映画に行く</h3>
-              <h4>ノブさんと映画見に行くことになったが、気まずいら事前に誰かを誘いたい。太一にはもう聞いて見たが断られた。でも二人で行きたくないから必死に誰かを誘いたい</h4>
-            </div>
           </div>
-
-          <div class="task">
-            <h3>8月15日</h3>
-            <div class="content">
-              <h3 style="font-weight: bold;">明日映画に行く</h3>
-              <h4>ノブさんと映画見に行くことになったが、気まずいら事前に誰かを誘いたい。太一にはもう聞いて見たが断られた。でも二人で行きたくないから必死に誰かを誘いたい</h4>
-            </div>
-          </div>
-
-          <div class="task">
-            <h3>8月15日</h3>
-            <div class="content">
-              <h3 style="font-weight: bold;">明日映画に行く</h3>
-              <h4>ノブさんと映画見に行くことになったが、気まずいら事前に誰かを誘いたい。太一にはもう聞いて見たが断られた。でも二人で行きたくないから必死に誰かを誘いたい</h4>
-            </div>
-          </div>
-        </div>
-
+          </article>
+          <?php endforeach; ?>
       </div>
     </div>
   </div>
-
   <script src="assets/js/jquery-3.1.1.js"></script>
   <script src="assets/js/jquery-migrate-1.4.1.js"></script>
   <script src="assets/js/bootstrap.js"></script>
