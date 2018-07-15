@@ -20,11 +20,11 @@ if (!empty($_POST)) {
   }
 }
 
-$sql='SELECT * FROM `tasks`';
+$sql='SELECT * FROM `tasks` ORDER BY id DESC';
 $stmt=$dbh->prepare($sql);
 $stmt->execute();
 
-$comments = array();
+$alls = array();
 
 while (1)
 {
@@ -33,7 +33,7 @@ while (1)
   {
     break;
   }
-  $comments[]=$rec;
+  $alls[]=$rec;
 }
 $dbh=null;
 ?>
@@ -61,18 +61,21 @@ $dbh=null;
         <br><br>
         <br><br>
 
-        <?php foreach ($comments as $comment): ?>
+        <?php foreach ($alls as $all): ?>
         <article class="timeline-entry">
         <div class="col-xs-8">
           <div class="task" >
-            <h3><?php echo $comment['title']?></h3>
-            <div class="content">
-              <h3 style="font-weight: bold;"><?php echo $comment['date']?></h3>
-              <h4><?php echo $comment['detail']?></h4>
-            </div>
-          </div>
-          </div>
-          </article>
+            <h3><?php echo $all['title']?></h3>
+             <div class="content">
+              <h3 style="font-weight: bold;"><?php echo $all['date']?></h3>
+              <h4><?php echo $all['detail']?></h4>
+              <!-- 削除ボタン -->
+              <a href="delete_1.php?id=<?php echo $all["id"]; ?>" class="btn btn-danger">削除</a>
+              
+             </div>
+           </div>
+        </div>
+        </article>
           <?php endforeach; ?>
       </div>
     </div>
