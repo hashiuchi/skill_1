@@ -1,26 +1,14 @@
 <?php
 
-  $dsn = 'mysql:dbname=skill_1;host=localhost';
+$dsn = 'mysql:dbname=skill_1;host=localhost';
 $user = 'root';
 $password='';
 $dbh = new PDO($dsn, $user, $password);
 $dbh->query('SET NAMES utf8');
 
-//SQL文を実行する
-if (!empty($_POST)) {
-  $mustdo = htmlspecialchars($_POST['mustdo']);
-  $date = htmlspecialchars($_POST['date']);
-  $detail = htmlspecialchars($_POST['detail']);
 
-  if (!empty($mustdo || $date || $detail)) {
-    $sql='INSERT INTO `tasks`(`title`,`date`,`detail`) VALUES(?,?,?)';
-    $data =[$mustdo,$date,$detail];
-    $stmt=$dbh->prepare($sql);
-    $stmt->execute($data);
-  }
-}
 
-$sql='SELECT * FROM `tasks` ORDER BY id DESC';
+$sql='SELECT * FROM `tasks` ORDER BY date ASC';
 $stmt=$dbh->prepare($sql);
 $stmt->execute();
 
@@ -37,6 +25,7 @@ while (1)
 }
 $dbh=null;
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -46,7 +35,7 @@ $dbh=null;
   <link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
-<body style="margin-top: 40px">
+<body style="margin-top: 70px">
 
   <div class="container">
     <div class="row">
@@ -55,28 +44,23 @@ $dbh=null;
         <h2 class="text-center content_header">タスク管理</h2>
 
         <div class="col-xs-4">
-          <a href="http://localhost/batch43/skill_1/post.php" class="btn btn-primary button">追加</a>
+          <a href="post.php" class="btn btn-primary button">追加</a>
         </div>
-        <br><br>
-        <br><br>
-        <br><br>
-
-        <?php foreach ($alls as $all): ?>
-        <article class="timeline-entry">
         <div class="col-xs-8">
-          <div class="task" >
+          <?php foreach ($alls as $all): ?>
+          <article class="timeline-entry">
+           <div class="task" >
             <h3><?php echo $all['title']?></h3>
              <div class="content">
               <h3 style="font-weight: bold;"><?php echo $all['date']?></h3>
               <h4><?php echo $all['detail']?></h4>
               <!-- 削除ボタン -->
               <a href="delete_1.php?id=<?php echo $all["id"]; ?>" class="btn btn-danger">削除</a>
-              
              </div>
            </div>
-        </div>
-        </article>
+          </article>
           <?php endforeach; ?>
+        </div>
       </div>
     </div>
   </div>

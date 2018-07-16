@@ -1,3 +1,28 @@
+<?php
+$dsn = 'mysql:dbname=skill_1;host=localhost';
+$user = 'root';
+$password='';
+$dbh = new PDO($dsn, $user, $password);
+$dbh->query('SET NAMES utf8');
+
+
+if (!empty($_POST)) {
+  $mustdo = htmlspecialchars($_POST['mustdo']);
+  $date = htmlspecialchars($_POST['date']);
+  $detail = htmlspecialchars($_POST['detail']);
+
+  if (!empty($mustdo || $date || $detail)) {
+    $sql='INSERT INTO `tasks`(`title`,`date`,`detail`) VALUES(?,?,?)';
+    $data =[$mustdo,$date,$detail];
+    $stmt=$dbh->prepare($sql);
+    $stmt->execute($data);
+
+    header("location: schedule.php");
+  }
+}
+
+$dbh=null;
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -13,7 +38,7 @@
       <div class="col-xs-8 col-xs-offset-2 thumbnail">
         <h2 class="text-center content_header">タスク追加</h2>
 
-        <form method="POST" action="schedule.php">
+        <form method="POST" action="">
           <div class="form-group">
             <label for="task">タスク</label>
             <input type = "text" name="mustdo" class="form-control">
