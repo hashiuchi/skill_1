@@ -56,6 +56,8 @@ $dbh=null;
               <h4><?php echo $all['detail']?></h4>
               <!-- 削除ボタン -->
               <a href="delete_1.php?id=<?php echo $all["id"]; ?>" class="btn btn-danger">削除</a>
+
+              <a href="edit_1.php?id=<?php echo $all["id"]; ?>" class="btn btn-success">編集</a>
              </div>
            </div>
           </article>
